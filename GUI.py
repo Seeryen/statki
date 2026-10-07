@@ -106,6 +106,21 @@ message_label = tk.Label(
 message_label.pack()
 def on_message(message):
     message_label.config(text=message)
+def handle_message(message, row, col):
+    if message == "trafiony":
+        enemy_buttons[(row, col)].config(
+            text="X",
+            bg="red",
+            fg="white",
+            state="disabled"
+        )
+
+    elif message == "pudlo":
+        enemy_buttons[(row, col)].config(
+            text="O",
+            bg="lightblue",
+            state="disabled"
+        )
 
 
 
