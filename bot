@@ -1,0 +1,71 @@
+from random import choice
+
+class Bot:
+    def __init__(self, grid_size):
+        # 0 - nieostrzelone pole
+        # 1 - ostrzelone pudło
+        # 2 - ostrzelone trafione
+        self.grid = [[0] * grid_size] * grid_size
+
+        self.did_hit = False
+        self.last_hit = (0, 0)
+
+        self.priority_cells = []
+        self.even_cells = []
+        self.odd_cells = []
+
+        for i in range(grid_size):
+            for j in range(grid_size):
+                cell = (i + 1, j + 1)
+                if (i + j + 2) % 2 == 0:
+                    self.even_cells.append(cell)
+                else:
+                    self.odd_cells.append(cell)
+
+    def shoot(self):
+        if self.did_hit:
+            x, y = self.last_hit
+
+            neighbors = [
+                (x + 1, y),
+                (x - 1, y + 1),
+                (x, y - 1),
+                (x, y + 1),
+            ]
+
+            for cell in neighbors:
+                if cell in bot.even_cells:
+                    self.priority_cells.append(cell)
+                    bot.even_cells.remove(cell)
+
+                elif cell in bot.odd_cells:
+                    self.priority_cells.append(cell)
+                    bot.odd_cells.remove(cell)
+
+            self.did_hit = False
+
+        if self.priority_cells:
+            x, y = choice(self.priority_cells)
+            self.priority_cells.remove((x, y))
+        elif self.even_cells:
+            x, y = choice(self.even_cells)
+            self.even_cells.remove((x, y))
+        else:
+            x, y = choice(self.odd_cells)
+            self.odd_cells.remove((x, y))
+
+        self.last_hit = (x, y)
+        print("bot:      ", x, y)
+
+    def get_response(self, response):
+        if response == "T":
+            self.did_hit = True
+
+
+
+bot = Bot(grid_size=4)
+
+while bot.even_cells or bot.odd_cells:
+    bot.shoot()
+    print(bot.priority_cells, bot.even_cells, bot.odd_cells)
+    bot.get_response(input("odpowiedź: "))
