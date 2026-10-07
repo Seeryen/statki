@@ -98,5 +98,15 @@ enemy_frame.pack(
     padx=15,
     pady=15
 )
+message_label = tk.Label(
+    root,
+    text="",
+    font=("Arial", 12, "bold")
+)
+message_label.pack()
+def on_message(message):
+    message_label.config(text=message)
+
+
 
 root.mainloop()
